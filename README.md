@@ -40,16 +40,16 @@
 
 ```mermaid
 flowchart LR
-    A[Вопрос гостя] --> B{Есть готовый ответ в админке?}
+    A[Вопрос гостя] --> B{Есть готовый<br/>ответ в админке?}
     B -- да --> Z[Мгновенный ответ]
-    B -- нет --> C{Вопрос про место рядом?}
+    B -- нет --> C{Вопрос про<br/>место рядом?}
     C -- да --> D[OpenStreetMap Overpass]
     D -->|не нашлось| E[Локальная БД мест]
     E -->|не нашлось| F[Yandex Web Search]
-    C -- нет --> G[YandexGPT плюс контекст сайта]
+    C -- нет --> G[YandexGPT<br/>+ контекст сайта: номера, тарифы, FAQ]
     F --> Z
     G --> Z
-    Z -.-> H[Лог непонятых вопросов в админке]
+    Z -.слабый ответ.-> H[(Лог непонятых<br/>вопросов → админка)]
 ```
 
 - **Контекст всего сайта** — модель получает актуальные номера, категории, тарифы и настройки отеля из БД при каждом ответе, а не статичный промпт.
@@ -91,26 +91,26 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-    subgraph Client[Браузер]
+    subgraph Client["Браузер"]
         UI[React-компоненты]
     end
-    subgraph Next[Next.js App Router]
-        Pages[Страницы SSR]
-        API[Route handlers]
-        Cache[unstable_cache с тег-based ревалидацией]
+    subgraph Next["Next.js App Router"]
+        Pages[Страницы / SSR]
+        API["/api/** route handlers"]
+        Cache["unstable_cache + React cache()<br/>тег-based ревалидация"]
     end
-    subgraph Data[Слой данных]
-        Repo[Repository-интерфейсы]
-        Adapter[MySQL-адаптер и пул соединений]
+    subgraph Data["Слой данных"]
+        Repo["Repository-интерфейсы (I*Repository)"]
+        MySQL["MySQL-адаптер + пул соединений"]
     end
-    DB[MySQL]
+    DB[(MySQL)]
 
     UI --> Pages
     UI --> API
     Pages --> Cache
     API --> Repo
     Cache --> Repo
-    Repo --> Adapter --> DB
+    Repo --> MySQL --> DB
 ```
 
 - **Repository-паттерн** для всех сущностей (номера, категории, удобства, места, настройки) — интерфейс отдельно от MySQL-реализации, что делает БД заменяемой и упрощает моки в тестах.
