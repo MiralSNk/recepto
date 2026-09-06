@@ -1,0 +1,105 @@
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+@use 'sass:color';
+
+.map-section {
+  margin-top: fluid(32px, 48px);
+
+  &__map {
+    width: 100%;
+    height: 280px;
+    border-inline: 1px solid rgba(23, 63, 53, 0.14);
+    box-sizing: border-box;
+
+    @include settings-to('tablet') {
+      height: 380px;
+    }
+
+    @include settings-to('laptop') {
+      height: 440px;
+    }
+  }
+
+  &__contacts-bar {
+    background-color: var(--color-pr-warm);
+    padding: fluid(20px, 28px) fluid(12px, 24px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: fluid(16px, 24px);
+
+    @include settings-to('tablet') {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin-inline: auto;
+      width: 100%;
+    }
+  }
+
+  &__contacts-container {
+    display: flex;
+    flex-direction: column;
+    gap: fluid(12px, 16px);
+
+    @include settings-to('tablet') {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: fluid(20px, 36px);
+    }
+  }
+
+  &__contact {
+    display: flex;
+    align-items: center;
+    gap: fluid(8px, 10px);
+  }
+
+  &__icon {
+    width: fluid(16px, 18px);
+    height: fluid(16px, 18px);
+    color: var(--color-pr-gold);
+    flex-shrink: 0;
+  }
+
+  &__text,
+  &__link {
+    font-family: var(--font-family-body);
+    font-size: fluid(14px, 15px);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    line-height: 1.3;
+  }
+
+  &__link {
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--color-pr-gold);
+    }
+  }
+
+  &__book-btn {
+    padding: fluid(10px, 12px) fluid(24px, 32px);
+    background-color: var(--color-pr-brown);
+    color: var(--color-text-inverse);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-family-body);
+    font-size: fluid(14px, 16px);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    align-self: center;
+
+    @include settings-to('tablet') {
+      align-self: auto;
+      flex-shrink: 0;
+    }
+
+    &:active {
+      background-color: color.adjust(#173f35, $lightness: -8%);
+    }
+  }
+}

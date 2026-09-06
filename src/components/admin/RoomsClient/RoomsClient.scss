@@ -1,0 +1,699 @@
+@use '../../../styles/abstracts/functions' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+.admin-rooms {
+  padding: fluid(16px, 24px);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: fluid(16px, 20px);
+    flex-wrap: wrap;
+    gap: 12px;
+
+    &-loading {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--color-text-muted);
+    }
+
+    h1 {
+      font-size: fluid(20px, 24px);
+      color: var(--color-text-primary);
+      margin: 0;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__add-btn,
+  &__bulk-btn {
+    padding: fluid(8px, 10px) fluid(16px, 20px);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: fluid(14px, 15px);
+    transition: filter 0.2s, transform 0.1s;
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+
+  &__add-btn {
+    background: var(--color-pr-brown);
+    color: var(--color-text-inverse);
+
+    &:hover {
+      filter: brightness(0.9);
+    }
+  }
+
+  &__bulk-btn {
+    background: var(--color-pr-gold);
+    color: var(--color-text-inverse);
+
+    &:hover {
+      filter: brightness(0.92);
+    }
+  }
+
+  &__filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: fluid(16px, 20px);
+    flex-wrap: wrap;
+  }
+
+  &__search {
+    flex: 1;
+    min-width: 180px;
+    padding: fluid(8px, 10px) fluid(12px, 14px);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: var(--radius-md);
+    font-size: fluid(14px, 15px);
+    background: var(--color-white);
+    color: var(--color-text-primary);
+    transition: border-color 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-pr-gold);
+    }
+  }
+
+  &__filter-select {
+    padding: fluid(8px, 10px) fluid(12px, 14px);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    font-size: fluid(14px, 15px);
+    color: var(--color-text-primary);
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-pr-gold);
+    }
+  }
+
+  &__table-wrap {
+    overflow-x: auto;
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: fluid(13px, 14px);
+    min-width: 720px;
+
+    th,
+    td {
+      padding: fluid(10px, 12px) fluid(12px, 16px);
+      text-align: left;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      white-space: nowrap;
+    }
+
+    th {
+      background: var(--color-pr-warm);
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    tbody tr:hover {
+      background: rgba(245, 240, 232, 0.45);
+    }
+  }
+
+  &__toggle {
+    padding: 4px 12px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: background 0.2s;
+
+    &--published {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    &--draft {
+      background: #fff3e0;
+      color: #e65100;
+    }
+  }
+
+  &__edit,
+  &__delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px 8px;
+    transition: transform 0.2s, opacity 0.2s;
+    opacity: 0.75;
+
+    &:hover {
+      transform: scale(1.15);
+      opacity: 1;
+    }
+  }
+
+  &__modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+
+    @include settings-to('tablet', 'max') {
+      align-items: flex-end;
+      padding: 0;
+    }
+  }
+
+  &__modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 0;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+
+    &--large {
+      max-width: 920px;
+    }
+
+    h2 {
+      margin: 0;
+      padding: 20px 24px 14px;
+      font-size: fluid(18px, 20px);
+      color: #173f35;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      flex-shrink: 0;
+    }
+
+    &-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 20px;
+      padding: 20px 24px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+    }
+
+    &-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      // Только прямые потомки — иначе это же правило перехватывает и
+      // чекбоксы удобств/тарифов, вложенные на пару уровней глубже
+      // (.admin-rooms__amenity-checkbox), которые должны выглядеть как
+      // обычная строка «галочка + текст», а не как поле формы.
+      > label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: #666;
+        text-transform: uppercase;
+
+        input,
+        select,
+        textarea {
+          text-transform: none;
+          font-weight: 400;
+          letter-spacing: normal;
+          padding: 10px 12px;
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          border-radius: 10px;
+          font-size: 15px;
+          font-family: inherit;
+          color: #1a1a1a;
+          background: #faf9f7;
+          transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+          width: 100%;
+          box-sizing: border-box;
+          caret-color: #173f35;
+          -webkit-text-fill-color: #1a1a1a;
+
+          &:focus {
+            outline: none;
+            border-color: #89754f;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(137, 117, 79, 0.15);
+          }
+
+          &:disabled {
+            background: #f0f0f0;
+            color: #999;
+          }
+        }
+
+        textarea {
+          resize: vertical;
+          min-height: 64px;
+        }
+      }
+    }
+
+    &-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 20px 24px;
+      overflow-y: auto;
+
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--color-text-muted);
+
+        input,
+        select,
+        textarea {
+          padding: 10px 12px;
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          border-radius: 10px;
+          font-size: 15px;
+          font-family: inherit;
+          background: #faf9f7;
+          color: #1a1a1a;
+
+          &:focus {
+            outline: none;
+            border-color: var(--color-pr-gold);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(137, 117, 79, 0.15);
+          }
+        }
+      }
+    }
+
+    &-checkbox {
+      flex-direction: row !important;
+      align-items: center;
+      text-transform: none !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      letter-spacing: normal !important;
+      color: #1a1a1a !important;
+      gap: 10px !important;
+      cursor: pointer;
+      margin-top: 4px;
+
+      input[type='checkbox'] {
+        width: 18px;
+        height: 18px;
+        accent-color: #173f35;
+        margin: 0;
+        flex-shrink: 0;
+      }
+    }
+
+    &-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 16px 24px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      background: #faf9f7;
+      flex-shrink: 0;
+    }
+
+    &-cancel,
+    &-save {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: filter 0.15s, transform 0.1s;
+
+      &:active {
+        transform: scale(0.98);
+      }
+
+      &:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+    }
+
+    &-cancel {
+      background: #ebe7e0;
+      color: #444;
+
+      &:hover:not(:disabled) {
+        background: #e0dbd3;
+      }
+    }
+
+    &-save {
+      background: #173f35;
+      color: #fff;
+
+      &:hover:not(:disabled) {
+        filter: brightness(1.08);
+      }
+    }
+  }
+
+  &__form-error {
+    margin: 12px 24px 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #fdecea;
+    color: #c62828;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  &__photos {
+    padding: 0 24px 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    flex-shrink: 0;
+    max-height: 220px;
+    overflow-y: auto;
+
+    h3 {
+      margin: 16px 0 10px;
+      font-size: 14px;
+      color: #173f35;
+    }
+  }
+
+  &__upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px dashed rgba(23, 63, 53, 0.35);
+    border-radius: 10px;
+    background: #f5f0e8;
+    cursor: pointer;
+    font-size: 13px;
+    color: #173f35;
+    margin-bottom: 12px;
+
+    input[type='file'] {
+      font-size: 13px;
+      max-width: 220px;
+    }
+  }
+
+  &__photos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  &__photo {
+    position: relative;
+    width: 104px;
+    height: 78px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #eee;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  &__photo-actions {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 3px;
+
+    button {
+      border: none;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      padding: 2px 6px;
+      font-size: 14px;
+      line-height: 1;
+    }
+  }
+
+  &__photo-cover {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    font-size: 10px;
+    background: #173f35;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  // Блок удобств (вложенный)
+  &__amenities {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    > span {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: #666;
+    }
+
+    &-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    &-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #1a1a1a;
+      cursor: pointer;
+      text-transform: none;
+      letter-spacing: normal;
+
+      input[type='checkbox'] {
+        width: 18px;
+        height: 18px;
+        accent-color: #173f35;
+        margin: 0;
+      }
+    }
+  }
+
+  &__amenities-empty {
+    font-size: 13px;
+    color: #999;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  // Доп. услуги с фиксированной ценой (привязка тарифа к номеру)
+  &__tariffs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    > span:first-child {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: #666;
+    }
+
+    &-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+
+  &__tariff-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__tariff-label-input {
+    flex: 1 1 180px;
+    min-width: 120px;
+    padding: 6px 10px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+  }
+
+  &__tariff-price-tag {
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #173f35;
+    background: #eef1ef;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  &__field-hint {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  @include settings-to('tablet', 'max') {
+    padding: 12px;
+
+    &__header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    &__actions {
+      flex-direction: column;
+
+      .admin-rooms__add-btn,
+      .admin-rooms__bulk-btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    &__filters {
+      flex-direction: column;
+
+      .admin-rooms__search,
+      .admin-rooms__filter-select {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+
+    &__modal {
+      max-width: 100%;
+      max-height: 94vh;
+      border-radius: 16px 16px 0 0;
+      margin-top: auto;
+
+      &--large {
+        max-width: 100%;
+      }
+
+      h2 {
+        padding: 16px;
+        font-size: 18px;
+      }
+
+      &-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 16px;
+      }
+
+      &-fields {
+        padding: 16px;
+      }
+
+      &-actions {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+
+        button {
+          flex: 1;
+          min-width: 120px;
+        }
+      }
+    }
+
+    &__form-error {
+      margin: 10px 16px 0;
+    }
+
+    &__photos {
+      padding: 0 16px 12px;
+      max-height: 180px;
+    }
+
+    &__table {
+      font-size: 13px;
+
+      th,
+      td {
+        padding: 8px 10px;
+      }
+    }
+
+    &__tariff-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__tariff-label-input {
+      flex-basis: auto;
+      width: 100%;
+    }
+
+    &__tariff-price-tag {
+      align-self: flex-start;
+    }
+  }
+}
+
+// Общие классы загрузки/ошибки (используются в разных компонентах)
+.admin-loading,
+.admin-error {
+  padding: 40px 16px;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.admin-error {
+  color: #c62828;
+}

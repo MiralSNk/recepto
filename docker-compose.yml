@@ -1,0 +1,19 @@
+services:
+  mysql-test:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: recepto_test
+    ports:
+      - '3307:3306'
+    volumes:
+      - mysql-test-data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql-test-data:

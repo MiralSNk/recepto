@@ -1,0 +1,111 @@
+import { vi } from 'vitest';
+
+export function createMockDB(overrides: Record<string, unknown> = {}) {
+  return {
+    rooms: {
+      getAllRooms: vi.fn().mockResolvedValue([]),
+      getRoomsByCategory: vi.fn().mockResolvedValue([]),
+      getAdminRooms: vi.fn().mockResolvedValue([]),
+      getAdminRoomById: vi.fn().mockResolvedValue(null),
+      createRoom: vi.fn().mockResolvedValue({ id: 1 }),
+      updateRoom: vi.fn().mockResolvedValue({ id: 1 }),
+      deleteRoom: vi.fn().mockResolvedValue(undefined),
+      bulkUpdatePrices: vi.fn().mockResolvedValue(1),
+      getRoomById: vi.fn().mockResolvedValue(undefined),
+      ...((overrides.rooms as object) || {}),
+    },
+    categories: {
+      getAllCategories: vi.fn().mockResolvedValue([]),
+      getVisibleCategories: vi.fn().mockResolvedValue([]),
+      getCategoryByKey: vi.fn().mockResolvedValue(null), // изменено: по умолчанию null
+      getCategoryById: vi.fn().mockResolvedValue(null),
+      createCategory: vi.fn().mockResolvedValue({ id: 1 }),
+      updateCategory: vi.fn().mockResolvedValue(undefined),
+      deleteCategory: vi.fn().mockResolvedValue(undefined),
+      countRoomsInCategory: vi.fn().mockResolvedValue(0),
+      getCategoryLabel: vi.fn().mockResolvedValue('Комфорт'),
+      categoryExists: vi.fn().mockResolvedValue(false),
+      isValidCategory: vi.fn().mockResolvedValue(true),
+      ...((overrides.categories as object) || {}),
+    },
+    chat: {
+      getSetting: vi.fn().mockResolvedValue(null),
+      setSetting: vi.fn().mockResolvedValue(undefined),
+      getQuickReplies: vi.fn().mockResolvedValue([]),
+      createQuickReply: vi.fn().mockResolvedValue({ id: 1 }),
+      updateQuickReply: vi.fn().mockResolvedValue(undefined),
+      deleteQuickReply: vi.fn().mockResolvedValue(undefined),
+      ...((overrides.chat as object) || {}),
+    },
+    places: {
+      getPlaces: vi.fn().mockResolvedValue([]),
+      getAllPlaces: vi.fn().mockResolvedValue([]),
+      getPlaceById: vi.fn().mockResolvedValue(null),
+      createPlace: vi.fn().mockResolvedValue({ id: 1 }),
+      updatePlace: vi.fn().mockResolvedValue(undefined),
+      deletePlace: vi.fn().mockResolvedValue(undefined),
+      ...((overrides.places as object) || {}),
+    },
+    placeCategories: {
+      getAllPlaceCategories: vi.fn().mockResolvedValue([]),
+      createPlaceCategory: vi.fn().mockResolvedValue({ id: 1 }),
+      updatePlaceCategory: vi.fn().mockResolvedValue(undefined),
+      deletePlaceCategory: vi.fn().mockResolvedValue(undefined),
+      ...((overrides.placeCategories as object) || {}),
+    },
+    amenities: {
+      getAllAmenities: vi.fn().mockResolvedValue([
+        { id: 1, amenity_key: 'wifi', label: 'Wi‑Fi', sort_order: 10 },
+      ]),
+      getAmenityByKey: vi.fn().mockResolvedValue(null),
+      getAmenityById: vi.fn().mockResolvedValue(null),
+      createAmenity: vi.fn().mockResolvedValue({ id: 1 }),
+      updateAmenity: vi.fn().mockResolvedValue(undefined),
+      deleteAmenity: vi.fn().mockResolvedValue(undefined),
+      ...((overrides.amenities as object) || {}),
+    },
+    tariffs: {
+      getAllTariffs: vi.fn().mockResolvedValue([
+        { id: 1, tariff_key: 'second_guest', label: 'Доплата за 2-го гостя', price: 400, is_builtin: true, in_calculator: true, sort_order: 10 },
+        { id: 2, tariff_key: 'extra_guest', label: 'Доплата за 3-го и каждого следующего гостя', price: 800, is_builtin: true, in_calculator: true, sort_order: 20 },
+      ]),
+      getTariffById: vi.fn().mockResolvedValue(null),
+      getTariffByKey: vi.fn().mockResolvedValue(null),
+      createTariff: vi.fn().mockResolvedValue({ id: 3 }),
+      updateTariff: vi.fn().mockResolvedValue(undefined),
+      deleteTariff: vi.fn().mockResolvedValue(undefined),
+      countRoomTariffUsage: vi.fn().mockResolvedValue(0),
+      ...((overrides.tariffs as object) || {}),
+    },
+    bookings: {
+      createBooking: vi.fn().mockResolvedValue({ id: 99 }),
+      getBookingById: vi.fn().mockResolvedValue(null),
+      getBookings: vi.fn().mockResolvedValue([]),
+      updateBookingStatus: vi.fn().mockResolvedValue(undefined),
+      ...((overrides.bookings as object) || {}),
+    },
+    unansweredQueries: {
+      upsertUnansweredQuery: vi.fn().mockResolvedValue(undefined),
+      getUnansweredQueries: vi.fn().mockResolvedValue([]),
+      deleteUnansweredQuery: vi.fn().mockResolvedValue(undefined),
+      findAnswer: vi.fn().mockResolvedValue(null),
+      setAnswer: vi.fn().mockResolvedValue(undefined),
+      clearAnswer: vi.fn().mockResolvedValue(undefined), // добавлено
+      ...((overrides.unansweredQueries as object) || {}),
+    },
+    siteSettings: {
+      getSetting: vi.fn().mockResolvedValue(null),
+      getSettings: vi.fn().mockResolvedValue({}),
+      setSetting: vi.fn().mockResolvedValue(undefined),
+      ...((overrides.siteSettings as object) || {}),
+    },
+    users: {
+      findByEmail: vi.fn().mockResolvedValue(null),
+      createUser: vi.fn().mockResolvedValue({ id: 1 }),
+      updatePassword: vi.fn().mockResolvedValue(undefined),
+      findFirstAdmin: vi.fn().mockResolvedValue(null),
+      updateSecretWord: vi.fn().mockResolvedValue(undefined),
+      ...((overrides.users as object) || {}),
+    },
+  };
+}

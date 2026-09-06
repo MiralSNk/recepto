@@ -1,0 +1,45 @@
+@use '../../../styles/abstracts/functions' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-cream);
+
+  &__main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__content {
+    padding: fluid(12px, 24px);
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  @include settings-to('tablet', 'max') {
+    &__content {
+      padding: 12px;
+    }
+  }
+
+  &__backdrop {
+    display: none;
+
+    @include settings-to('tablet', 'max') {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      border: none;
+      padding: 0;
+      margin: 0;
+      background: rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+    }
+  }
+}

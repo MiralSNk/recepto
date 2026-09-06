@@ -1,0 +1,74 @@
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.booking-pending-toast {
+  position: fixed;
+  z-index: 2100;
+  left: fluid(12px, 24px);
+  right: fluid(12px, 24px);
+  bottom: max(fluid(12px, 20px), env(safe-area-inset-bottom));
+  max-width: 420px;
+  margin-inline: auto;
+  background: var(--color-white);
+  border: 1px solid rgba(23, 63, 53, 0.12);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.16);
+  padding: fluid(12px, 14px) fluid(14px, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  @include settings-to('tablet') {
+    left: auto;
+    right: fluid(20px, 28px);
+    margin-inline: 0;
+    bottom: fluid(20px, 28px);
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-family: var(--font-family-body);
+    font-size: fluid(13px, 14px);
+    color: var(--color-text-primary);
+    line-height: 1.4;
+
+    strong {
+      color: var(--color-pr-brown);
+    }
+
+    span {
+      color: var(--color-text-muted);
+      font-size: 0.92em;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  &__cancel,
+  &__send {
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-family-body);
+  }
+
+  &__cancel {
+    background: #f0ebe3;
+    color: var(--color-text-primary);
+  }
+
+  &__send {
+    background: var(--color-pr-brown);
+    color: var(--color-text-inverse);
+  }
+}

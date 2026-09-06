@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.env*
+!.env.example
+!.env.docker.example
+coverage
+*.log
+.DS_Store
+DEPLOY.md
+DOCKER.md
+AUDIT.md

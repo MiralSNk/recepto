@@ -1,0 +1,222 @@
+@use '../abstracts/functions' as *;
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+%skeleton-bone {
+  background: linear-gradient(
+    90deg,
+    rgba(23, 63, 53, 0.06) 0%,
+    rgba(137, 117, 79, 0.14) 45%,
+    rgba(23, 63, 53, 0.06) 90%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.35s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+.sk {
+  &-bone {
+    @extend %skeleton-bone;
+  }
+
+  &-line {
+    @extend %skeleton-bone;
+    height: 12px;
+    border-radius: 6px;
+
+    &--lg {
+      height: 18px;
+    }
+
+    &--title {
+      height: 22px;
+      width: 60%;
+    }
+
+    &--sm {
+      height: 10px;
+      width: 40%;
+    }
+  }
+}
+
+// ----- Home / Category: панель + сетка карточек -----
+.skeleton-home {
+  padding-bottom: fluid(24px, 40px);
+
+  &__panel {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(245, 240, 232, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(23, 63, 53, 0.08);
+    padding: fluid(12px, 16px);
+    display: flex;
+    flex-direction: column;
+    gap: fluid(10px, 14px);
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: fluid(10px, 14px);
+
+    @media (max-width: 560px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__field {
+    @extend %skeleton-bone;
+    height: 52px;
+    border-radius: var(--radius-md);
+  }
+
+  &__chips {
+    display: flex;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  &__chip {
+    @extend %skeleton-bone;
+    height: 36px;
+    width: 88px;
+    flex-shrink: 0;
+    border-radius: var(--radius-full);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: fluid(16px, 24px);
+    padding: fluid(16px, 24px) fluid(12px, 16px);
+    max-width: 1200px;
+    margin-inline: auto;
+  }
+}
+
+.skeleton-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(85, 85, 85, 0.08);
+  display: flex;
+  flex-direction: column;
+
+  &__img {
+    @extend %skeleton-bone;
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  &__body {
+    padding: fluid(12px, 16px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+    gap: 12px;
+  }
+
+  &__price {
+    @extend %skeleton-bone;
+    height: 18px;
+    width: 110px;
+  }
+
+  &__btn {
+    @extend %skeleton-bone;
+    height: 36px;
+    width: 120px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+// ----- Room detail (full + modal) -----
+.skeleton-room {
+  background: var(--color-cream);
+  min-height: 100vh;
+
+  &--modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  &__sheet {
+    background: var(--color-cream);
+    min-height: 100%;
+    max-width: 720px;
+    margin-inline: auto;
+  }
+
+  &__back {
+    @extend %skeleton-bone;
+    width: 96px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    margin: fluid(12px, 16px);
+  }
+
+  &__gallery {
+    @extend %skeleton-bone;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 0;
+  }
+
+  &__info {
+    padding: fluid(16px, 24px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: var(--color-cream);
+    margin-top: -12px;
+    position: relative;
+  }
+
+  &__amenities {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__amenity {
+    @extend %skeleton-bone;
+    width: 72px;
+    height: 28px;
+    border-radius: var(--radius-full);
+  }
+
+  &__pricing {
+    @extend %skeleton-bone;
+    height: 72px;
+    width: 100%;
+  }
+
+  &__cta {
+    @extend %skeleton-bone;
+    height: 48px;
+    width: 100%;
+    border-radius: var(--radius-md);
+    margin-top: 8px;
+  }
+}

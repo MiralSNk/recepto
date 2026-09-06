@@ -1,0 +1,66 @@
+# Продакшен-стек: приложение + MySQL + Caddy (реверс-прокси с
+# автоматическим HTTPS). Отдельно от docker-compose.yml в корне — тот
+# используется только для эфемерной тестовой БД интеграционных тестов
+# (pnpm test:integration), не имеет отношения к продакшену.
+#
+# Запуск: см. DOCKER.md. Коротко:
+#   cp .env.docker.example .env.docker   # заполнить реальными значениями
+#   docker compose -f docker-compose.prod.yml --env-file .env.docker up -d
+
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    # Порт наружу намеренно не пробрасываем — MySQL доступен только другим
+    # контейнерам этого стека (app), не с самого сервера и не из интернета.
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    environment:
+      # Не берём из .env.docker — это топология именно docker-compose,
+      # менять их независимо от остального окружения смысла нет.
+      DB_HOST: mysql
+      DB_PORT: 3306
+    depends_on:
+      mysql:
+        condition: service_healthy
+    # Порт наружу тоже не пробрасываем — снаружи к приложению обращается
+    # только Caddy (см. ниже), напрямую с сервера/из интернета порт 3000
+    # недоступен.
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - app
+
+volumes:
+  mysql-data:
+  caddy-data:
+  caddy-config:

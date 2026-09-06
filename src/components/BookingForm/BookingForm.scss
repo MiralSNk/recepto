@@ -1,0 +1,490 @@
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+@use 'sass:color';
+
+// Обёртка (оверлей)
+.booking-form-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+
+  @include settings-to('tablet') {
+    align-items: center;
+    padding: 24px;
+  }
+
+  @include settings-to('laptop') {
+    padding: 32px;
+  }
+}
+
+// Основная форма
+.booking-form {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  margin: auto;
+  overflow: visible; // SmartCaptcha iframe
+  background: var(--color-cream);
+  border-radius: var(--radius-lg);
+  padding: fluid(20px, 32px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+
+  @include settings-to('tablet') {
+    max-width: 480px;
+  }
+
+  @include settings-to('laptop') {
+    max-width: 520px;
+  }
+
+  // Скрытое поле-ловушка (honeypot)
+  &__hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  // Кнопка закрытия (назад)
+  &__close {
+    position: sticky;
+    top: 12px;
+    z-index: 10;
+    float: right;
+    margin-bottom: 8px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius-full);
+    background: var(--color-pr-brown);
+    color: var(--color-text-inverse);
+    font-family: var(--font-family-body);
+    font-size: fluid(13px, 14px);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+
+    &::before {
+      content: 'Назад';
+      display: block;
+    }
+
+    @include hover {
+      background: color.adjust(#173f35, $lightness: -6%);
+    }
+  }
+
+  // Заголовок
+  &__title {
+    font-family: var(--font-family-heading);
+    font-size: fluid(20px, 26px);
+    margin: 0 48px 8px 0;
+    color: var(--color-text-primary);
+  }
+
+  // Блок информации о выбранном номере
+  &__room-block {
+    margin-bottom: 4px;
+  }
+
+  &__room {
+    font-family: var(--font-family-body);
+    color: var(--color-pr-gold);
+    margin: 0 0 8px;
+    font-size: fluid(14px, 16px);
+  }
+
+  // Поля формы
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: fluid(12px, 14px);
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: fluid(12px, 14px);
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: fluid(13px, 14px);
+      color: var(--color-text-muted);
+
+      input,
+      textarea {
+        padding: fluid(10px, 12px) fluid(12px, 14px);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: var(--radius-md);
+        background: var(--color-white);
+        font-size: fluid(14px, 15px);
+        color: var(--color-text-primary);
+        width: 100%;
+        box-sizing: border-box;
+
+        &:focus {
+          outline: none;
+          border-color: var(--color-pr-gold);
+        }
+      }
+    }
+  }
+
+  // Дети (возраст каждого ребёнка)
+  &__children {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__children-label {
+    font-size: fluid(13px, 14px);
+    color: var(--color-text-muted);
+  }
+
+  &__child-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    select {
+      flex: 1;
+      padding: fluid(10px, 12px) fluid(12px, 14px);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: var(--radius-md);
+      background: var(--color-white);
+      font-size: fluid(14px, 15px);
+      color: var(--color-text-primary);
+    }
+  }
+
+  &__child-remove {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.06);
+    color: var(--color-text-muted);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(200, 0, 0, 0.12);
+      color: #c62828;
+    }
+  }
+
+  &__child-add {
+    align-self: flex-start;
+    padding: 8px 14px;
+    border: 1px dashed rgba(0, 0, 0, 0.25);
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--color-pr-brown);
+    font-size: fluid(13px, 14px);
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: var(--color-pr-warm);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  // Сводка цены
+  &__price-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    background: var(--color-pr-warm);
+    border-radius: var(--radius-md);
+    font-size: fluid(13px, 14px);
+  }
+
+  &__price-row {
+    display: flex;
+    justify-content: space-between;
+    color: var(--color-text-muted);
+
+    &--total {
+      color: var(--color-text-primary);
+      font-weight: 700;
+      font-size: fluid(15px, 17px);
+    }
+  }
+
+  &__price-hint {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+
+  // Ряд с несколькими полями
+  &__row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    label {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    @include settings-to('tablet') {
+      flex-wrap: nowrap;
+
+      label {
+        min-width: 0;
+      }
+    }
+  }
+
+  // Обёртка для календаря
+  &__date-wrapper {
+    width: 100%;
+  }
+
+  // Поле ввода (используется в DatePicker)
+  &__input {
+    width: 100%;
+    padding: fluid(10px, 12px) fluid(12px, 14px);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    font-size: fluid(14px, 15px);
+    color: var(--color-text-primary);
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-pr-gold);
+    }
+  }
+
+  // Блок капчи
+  &__captcha {
+    position: relative;
+    z-index: 5;
+    overflow: visible;
+    min-height: 100px;
+    width: 100%;
+  }
+
+  &__captcha-error {
+    display: block;
+    margin-top: 6px;
+    font-size: fluid(12px, 13px);
+    color: #c62828;
+  }
+
+  // Согласие с политикой
+  &__agree {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: fluid(13px, 14px);
+    color: var(--color-text-muted);
+
+    input[type='checkbox'] {
+      margin-top: 2px;
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-pr-brown);
+      cursor: pointer;
+    }
+
+    a {
+      color: var(--color-pr-brown);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+
+      &:hover {
+        color: var(--color-pr-gold);
+      }
+    }
+  }
+
+  // Кнопка отправки
+  &__btn {
+    margin-top: 4px;
+    padding: fluid(12px, 14px);
+    background: var(--color-pr-brown);
+    color: var(--color-text-inverse);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: fluid(15px, 16px);
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s;
+
+    @include settings-to('tablet') {
+      width: auto;
+      min-width: 200px;
+      align-self: flex-start;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):active {
+      background: color.adjust(#173f35, $lightness: -8%);
+    }
+
+    @include hover {
+      &:not(:disabled) {
+        background: color.adjust(#173f35, $lightness: -5%);
+      }
+    }
+  }
+
+  // Ошибка
+  &__error {
+    color: #c62828;
+    font-size: fluid(13px, 14px);
+    margin: 0;
+  }
+
+  // Успешное сообщение (если используется)
+  &__success {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: fluid(12px, 20px) 0;
+  }
+
+  // Цена
+  &__price {
+    margin: 0 0 12px;
+    font-size: fluid(14px, 15px);
+    color: var(--color-pr-brown);
+    font-weight: 600;
+
+    &-half {
+      font-weight: 400;
+      color: var(--color-text-muted);
+    }
+  }
+
+  // Выбор номера
+  &__room-select {
+    margin-bottom: 12px;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+      color: var(--color-text-muted);
+    }
+
+    select {
+      padding: 10px 12px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: var(--radius-md);
+      background: var(--color-white);
+      font-size: 15px;
+      color: var(--color-text-primary);
+      width: 100%;
+      box-sizing: border-box;
+      cursor: pointer;
+
+      &:focus {
+        outline: none;
+        border-color: var(--color-pr-gold);
+      }
+    }
+  }
+
+  // Блок ошибки (для статуса error)
+  &__error-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fdecea;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    margin-top: 4px;
+    animation: booking-form-shake 0.3s ease;
+  }
+
+  &__error-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  // Примечание под кнопкой
+  &__note {
+    margin: 0;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  // Анимация "тряски" для ошибок
+  @keyframes booking-form-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  // Глобальные стили для react-datepicker
+  :global(.react-datepicker) {
+    font-family: var(--font-family-body);
+    border-color: var(--color-pr-gold);
+  }
+
+  :global(.react-datepicker__header) {
+    background-color: var(--color-cream);
+    border-bottom-color: var(--color-pr-gold);
+  }
+
+  :global(.react-datepicker__day--selected),
+  :global(.react-datepicker__day--in-range) {
+    background-color: var(--color-pr-brown) !important;
+    color: var(--color-text-inverse) !important;
+  }
+
+  :global(.react-datepicker__day--keyboard-selected) {
+    background-color: var(--color-pr-gold) !important;
+  }
+
+  :global(.react-datepicker-popper) {
+    z-index: 30;
+
+    @include settings-to('tablet', 'max') {
+      max-width: calc(100vw - 48px);
+    }
+  }
+}

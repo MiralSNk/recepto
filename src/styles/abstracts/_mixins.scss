@@ -1,0 +1,109 @@
+@use 'sass:map';
+@use 'breakpoints' as *;
+
+//--------------------------------------------------------------------
+// Мексин медиазапросов по контрольным точкам (mobile-first),
+// задавая правила которые будут работать по определенным конечным точкам 
+//
+// Использует map из _breakpoints.scss
+//
+// Параметры:
+// константа $width -> 'mobile', 'tablet, 'desktop'
+//
+// Пример использования:
+// .block{
+//  display: block;
+//  @include respond-to('tablet'){
+//      display: flex;
+//  }
+// }
+//--------------------------------------------------------------------
+@mixin settings-to($breakpoint, $type: 'min') {
+  $width: map.get($breakpoints, $breakpoint);
+
+  @if $width {
+    @if $type == 'max' {
+      @media (max-width: calc(#{$width} - 0.02px)) {
+        @content;
+      }
+    } @else {
+      @media (min-width: $width) {
+        @content;
+      }
+    }
+  } @else {
+    @error "Неизвестная breakpoint: #{$breakpoint}";
+  }
+}
+
+/// Скрывает опционально, но не для скринридеров
+@mixin visually-hidden{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/// Полностью скрывает (и визуально, и от скринридеров)
+@mixin hidden {
+  display: none !important;
+}
+
+/// Скрыть на мобильных (меньше tablet)
+@mixin hide-on-mobile {
+  @include settings-to('mobile', 'max') {
+    display: none;
+  }
+}
+
+/// Скрыть на планшетах и шире (tablet и больше)
+@mixin hide-on-tablet-up {
+  display: block;
+  @include settings-to('tablet') {
+    display: none;
+  }
+}
+
+/// Скрыть на десктопе
+@mixin hide-on-desktop {
+  @include settings-to('desktop') {
+    display: none;
+  }
+}
+
+/// Показать только на мобильных
+@mixin show-only-mobile {
+  display: none;
+
+  @include settings-to('tablet', 'max') {
+    display: block;
+  }
+}
+
+/// Только для устройств с мышью (не сработает на тачскринах)
+@mixin hover {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+/// Срабатывает при навидении
+@mixin focus-visible {
+  &:focus-visible {
+    @content;
+  }
+}
+
+/// Срабатывает при нажатии
+@mixin active {
+  &:active {
+    @content;
+  }
+}

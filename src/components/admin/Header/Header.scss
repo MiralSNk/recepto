@@ -1,0 +1,52 @@
+@use '../../../styles/abstracts/functions' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: fluid(8px, 12px) fluid(16px, 24px);
+  background: var(--color-white);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  min-height: 56px;
+  gap: 12px;
+
+  &__toggle {
+    background: none;
+    border: none;
+    font-size: fluid(20px, 24px);
+    cursor: pointer;
+    padding: 8px;
+    color: var(--color-text-primary);
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &__logout {
+    background: none;
+    border: 1px solid var(--color-pr-brown);
+    padding: fluid(6px, 8px) fluid(12px, 16px);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--color-pr-brown);
+    font-family: var(--font-family-body);
+    font-size: fluid(13px, 14px);
+    transition: all 0.2s;
+
+    &:hover {
+      background: var(--color-pr-brown);
+      color: var(--color-text-inverse);
+    }
+  }
+
+  @include settings-to('tablet', 'max') {
+    padding: fluid(6px, 10px) fluid(12px, 16px);
+    &__logout {
+      padding: 4px 12px;
+      font-size: 13px;
+    }
+  }
+}

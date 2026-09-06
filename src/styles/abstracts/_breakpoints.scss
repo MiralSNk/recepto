@@ -1,0 +1,13 @@
+/// Стандартные точки для адаптивной верстки
+/// mobile, tablet, desktop -> базовые размеры устройств
+/// laptop -> размер промежуточного устройства, от desktop к tablet
+///
+/// @example
+///     $width: map-get($map: ,$key: )
+$breakpoints: (
+    'mobile': 375px,
+    'tablet': 768px,
+    'laptop-tablet': 940px,
+    'laptop': 1024px,
+    'desktop': 1440px,
+)

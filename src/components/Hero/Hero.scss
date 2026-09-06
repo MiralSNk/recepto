@@ -1,0 +1,76 @@
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+  background-color: var(--color-pr-warm);
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.05);
+    will-change: transform;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.15) 40%,
+      rgba(0, 0, 0, 0.65) 100%
+    );
+  }
+
+  &__content {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: var(--color-text-inverse);
+    z-index: 2;
+    width: 90%;
+    max-width: 700px;
+  }
+
+  &__title {
+    font-family: var(--font-family-heading);
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  &__subtitle {
+    font-family: var(--font-family-body);
+    font-size: clamp(14px, 1.8vw, 18px);
+    font-weight: 400;
+    opacity: 0.9;
+    line-height: 1.5;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  @include settings-to('tablet', 'max') {
+    &__content {
+      bottom: 100px;
+    }
+  }
+
+  @include settings-to('mobile', 'max') {
+    min-height: 500px;
+    &__title {
+      font-size: 32px;
+    }
+    &__subtitle {
+      font-size: 14px;
+    }
+  }
+}

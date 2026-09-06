@@ -1,0 +1,143 @@
+@use '../../../styles/abstracts/functions' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+.home-admin {
+  padding: fluid(16px, 24px);
+
+  &__loading,
+  &__message {
+    padding: 16px;
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  &__title {
+    font-size: fluid(20px, 24px);
+    color: var(--color-pr-brown);
+    margin-bottom: fluid(16px, 24px);
+  }
+
+  &__section {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: fluid(16px, 24px);
+    margin-bottom: fluid(16px, 24px);
+
+    h2 {
+      font-size: fluid(18px, 20px);
+      color: var(--color-text-primary);
+      margin: 0 0 fluid(12px, 16px);
+    }
+  }
+
+  &__hint {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin-bottom: 12px;
+    code {
+      background: #f0f0f0;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: var(--color-text-muted);
+
+    input[type='text'],
+    textarea {
+      padding: 10px 12px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--color-text-primary);
+    }
+
+    input[type='file'] {
+      font-size: 13px;
+    }
+  }
+
+  &__checkbox-field {
+    flex-direction: row !important;
+    align-items: center;
+    gap: 8px !important;
+
+    input[type='checkbox'] {
+      width: 16px;
+      height: 16px;
+      accent-color: #173f35;
+      flex-shrink: 0;
+    }
+  }
+
+  &__preview-wrap,
+  &__logo-preview-wrap {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  &__preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+  }
+
+  &__logo-preview {
+    max-width: 200px;
+    max-height: 80px;
+    object-fit: contain;
+  }
+
+  &__remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  &__logo-row {
+    margin-bottom: 16px;
+  }
+
+  &__save-btn {
+    padding: 10px 20px;
+    background: var(--color-pr-brown);
+    color: var(--color-text-inverse);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  @include settings-to('tablet', 'max') {
+    padding: 12px;
+
+    &__section {
+      padding: 16px;
+    }
+
+    &__save-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

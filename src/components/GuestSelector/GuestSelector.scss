@@ -1,0 +1,233 @@
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.guest-selector {
+  position: relative;
+  width: 100%;
+
+  &__btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: fluid(10px, 12px) fluid(12px, 14px);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-text-muted);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color 0.2s;
+    font-family: var(--font-family-heading);
+    color: var(--color-text-primary);
+    font-size: fluid(14px, 15px);
+    text-align: left;
+    gap: 2px;
+    box-sizing: border-box;
+
+    &:active,
+    &:focus-within {
+      border-color: var(--color-pr-gold);
+    }
+
+    @include focus-visible {
+      outline: 2px solid var(--color-pr-gold);
+      outline-offset: 2px;
+    }
+
+    @include hover {
+      border-color: var(--color-pr-gold);
+    }
+
+    &-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+
+    &-label {
+      font-family: var(--font-family-body);
+      font-size: fluid(10px, 11px);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+  }
+
+  &__dropdown {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    padding: fluid(12px, 14px) fluid(16px, 20px);
+    display: flex;
+    flex-direction: column;
+    gap: fluid(12px, 14px);
+    min-width: 200px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__item-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__item-title {
+    font-family: var(--font-family-body);
+    font-size: fluid(14px, 15px);
+    color: var(--color-text-primary);
+  }
+
+  &__item-hint {
+    font-family: var(--font-family-body);
+    font-size: fluid(12px, 13px);
+    color: var(--color-text-muted);
+  }
+
+  &__counter {
+    display: flex;
+    align-items: center;
+    gap: fluid(8px, 10px);
+  }
+
+  &__count {
+    font-family: var(--font-family-body);
+    font-size: fluid(15px, 16px);
+    color: var(--color-text-primary);
+    min-width: 24px;
+    text-align: center;
+  }
+
+  &__counter-btn {
+    width: fluid(28px, 30px);
+    height: fluid(28px, 30px);
+    border-radius: 50%;
+    border: 1px solid rgba(var(--color-text-muted), 0.3);
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s, border-color 0.2s;
+
+    @include focus-visible {
+      outline: 2px solid var(--color-pr-gold);
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):active {
+      background-color: var(--color-pr-warm);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 2px;
+      background-color: var(--color-text-primary);
+      border-radius: 1px;
+    }
+
+    &--plus::after {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 2px;
+      background-color: var(--color-text-primary);
+      border-radius: 1px;
+      transform: translate(-50%, -50%) rotate(90deg);
+    }
+  }
+
+  &__children {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__child-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+
+    // Чистая CSS-анимация вместо gsap — играет один раз при монтировании
+    // DOM-узла (то есть только для реально нового ряда, React переиспользует
+    // узлы существующих строк по key), без JS-тика на каждый кадр.
+    &--enter {
+      animation: guest-selector-child-in 0.3s ease-out both;
+    }
+
+    select {
+      flex: 1;
+      padding: 8px 10px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: var(--radius-md);
+      background: var(--color-white);
+      font-family: var(--font-family-body);
+      font-size: fluid(13px, 14px);
+      color: var(--color-text-primary);
+    }
+  }
+
+  &__child-remove {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.06);
+    color: var(--color-text-muted);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(200, 0, 0, 0.12);
+      color: #c62828;
+    }
+  }
+}
+
+.guest-selector__dropdown--portal {
+  position: fixed;
+  z-index: 80;
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  padding: fluid(12px, 14px) fluid(16px, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: fluid(12px, 14px);
+  min-width: 200px;
+  max-width: calc(100vw - 32px);
+  pointer-events: auto;
+
+  @include settings-to('tablet') {
+    min-width: 280px;
+  }
+}
+
+@keyframes guest-selector-child-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

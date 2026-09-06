@@ -1,0 +1,76 @@
+@use 'tokens' as *;
+@use 'base/reset';
+
+/* Izhitsa */
+@font-face {
+  font-family: 'Izhitsa';
+  src: url('/fonts/Izhitsa.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Garamond';
+  src: url('/fonts/Garamond.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Garamond';
+  src: url('/fonts/Garamond-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* VremenaGrotesk */
+@font-face {
+  font-family: 'VremenaGrotesk';
+  src: url('/fonts/VremenaGrotesk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --color-pr-gold: #{$color-pr-gold};
+  --color-pr-brown: #{$color-pr-brown};
+  --color-pr-warm: #{$color-pr-warm};
+
+  --color-cream: #{$color-cream};
+  --color-white: #{$color-white};
+  --color-dark: #{$color-dark};
+
+  --font-heading: 'Izhitsa', serif;
+  --font-subheading: 'Garamond', serif;
+  --font-family-heading: 'VremenaGrotesk', serif;
+  --font-family-body: var(--font-ui, 'Inter', sans-serif);;
+
+  --color-text-primary: #{$color-text-primary};
+  --color-text-inverse: #{$color-text-inverse};
+  --color-text-muted: #{$color-text-muted};
+
+  // Цвет названия/подписи логотипа в шапке (currentColor у SVG) — отдельно
+  // от --color-text-*, чтобы можно было настроить логотип, не трогая цвет
+  // обычного текста по всему сайту. Два состояния шапки — прозрачная (поверх
+  // фото) и с фоном (после скролла/на статичных страницах) — управляются
+  // раздельно, иначе один набор цветов неизбежно нечитаем в одном из состояний.
+  --color-logo-title: #{$color-text-primary};
+  --color-logo-subtitle: #{$color-text-muted};
+  --color-logo-title-transparent: #ffffff;
+  --color-logo-subtitle-transparent: #f2f2f2;
+
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+  --radius-full: #{$radius-full};
+
+  --spacing-unit: #{$spacing-unit};
+}
+
+body{
+  background-color: var(--color-cream);
+}

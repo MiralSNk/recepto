@@ -1,0 +1,46 @@
+@use 'sass:math';
+@use 'sass:map';
+@use 'breakpoints' as *;
+
+//--------------------------------------------------------------------
+// Генерирует плавное значение через clamp()
+// Берет min и max и превращает их в адаптивное значение,
+// которое масштабируется от $min-vw до $max-vw
+//
+// Параметры:
+// $min-size -> значение в px при минимальной ширине экрана ($min-vw)
+// $max-size -> значение в px при максимальной ширине экрана ($max-vw)
+// $min-vw   -> минимальная ширина вьюпорта
+// $max-vw   -> максимальная ширина вьюпорта
+//
+// Возвращает: clamp() выражение в rem, готовое для CSS.
+//--------------------------------------------------------------------
+@function fluid(
+    $min-size, $max-size,
+    $min-vw: map.get($map: $breakpoints, $key: 'mobile'), 
+    $max-vw: map.get($map: $breakpoints, $key: 'desktop')
+){
+    $slope: math.div($max-size - $min-size, $max-vw - $min-vw);
+    $intercept: $min-size - $slope * $min-vw;
+
+    @return clamp(#{$min-size}, #{$intercept} + #{$slope * 100}vw, #{$max-size});
+}
+
+/// Функция для значений, которые уменьшаются от мобильных к десктопу.
+/// @param {Number} $mobile-size - значение на мобильных (большое)
+/// @param {Number} $desktop-size - значение на десктопе (маленькое)
+/// @param {Number} $min-vw - минимальная ширина вьюпорта (по умолчанию 'mobile')
+/// @param {Number} $max-vw - максимальная ширина вьюпорта (по умолчанию 'desktop')
+@function fluid-down(
+    $mobile-size,
+    $desktop-size,
+    $min-vw: map.get($breakpoints, 'mobile'),
+    $max-vw: map.get($breakpoints, 'desktop')
+) {
+    // Вычисляем наклон (отрицательный)
+    $slope: math.div($desktop-size - $mobile-size, $max-vw - $min-vw);
+    $intercept: $mobile-size - $slope * $min-vw;
+    // clamp(desktop-size, значение, mobile-size)
+    // Так как desktop-size < mobile-size, clamp будет работать правильно
+    @return clamp(#{$desktop-size}, #{$intercept} + #{$slope * 100}vw, #{$mobile-size});
+}

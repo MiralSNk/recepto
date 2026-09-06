@@ -1,0 +1,262 @@
+@use '../../../styles/abstracts/functions' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+.formula-constructor {
+  margin-top: fluid(32px, 40px);
+  padding-top: fluid(24px, 32px);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+
+  &__title {
+    font-size: fluid(18px, 20px);
+    color: var(--color-pr-brown);
+    margin: 0 0 8px;
+  }
+
+  &__hint {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin: 0 0 16px;
+    max-width: 760px;
+
+    code {
+      background: #f0ede8;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+  }
+
+  &__palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  &__palette-btn {
+    padding: 6px 12px;
+    background: var(--color-white);
+    border: 1px dashed rgba(23, 63, 53, 0.4);
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--color-pr-brown);
+    transition: background 0.15s;
+
+    &:hover {
+      background: #eef1ef;
+    }
+  }
+
+  &__expression {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: fluid(12px, 16px);
+    min-height: 56px;
+  }
+
+  &__expr-item {
+    display: flex;
+    align-items: center;
+  }
+
+  &__empty {
+    color: var(--color-text-muted);
+    font-size: 13px;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+
+    &--card {
+      background: #173f35;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 999px;
+    }
+
+    &--op {
+      background: #e8e4dc;
+      color: var(--color-text-primary);
+      font-weight: 700;
+      min-width: 28px;
+      justify-content: center;
+    }
+  }
+
+  &__chip-remove {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    opacity: 0.7;
+    padding: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__gap {
+    position: relative;
+    display: inline-flex;
+  }
+
+  &__gap-btn {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px dashed rgba(0, 0, 0, 0.25);
+    background: transparent;
+    color: rgba(0, 0, 0, 0.35);
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      border-color: var(--color-pr-brown);
+      color: var(--color-pr-brown);
+    }
+  }
+
+  &__gap-popover {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    background: var(--color-white);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    padding: 6px;
+    z-index: 10;
+
+    button {
+      width: 26px;
+      height: 26px;
+      border: none;
+      border-radius: 4px;
+      background: #f0ede8;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+
+      &:hover {
+        background: #e0dbd0;
+      }
+    }
+  }
+
+  &__preview {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--color-text-primary);
+
+    &--error {
+      color: #b3261e;
+    }
+  }
+
+  &__example {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin-top: 4px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__reset-btn {
+    padding: 8px 16px;
+    background: #f5f5f5;
+    color: var(--color-text-muted);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 14px;
+
+    &:hover {
+      background: #e8e8e8;
+    }
+  }
+
+  &__save-btn {
+    padding: 8px 20px;
+    background: var(--color-pr-brown);
+    color: var(--color-text-inverse);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+
+    &:hover {
+      filter: brightness(0.85);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  &__message {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--color-pr-brown);
+  }
+
+  @include settings-to('tablet', 'max') {
+    &__palette-btn {
+      font-size: 12px;
+      padding: 5px 10px;
+    }
+
+    &__expression {
+      padding: 10px;
+      gap: 4px;
+    }
+
+    &__chip {
+      font-size: 12px;
+      padding: 5px 8px;
+    }
+
+    // Поповер вставки оператора центрируется по щели — рядом с левым/правым
+    // краем узкого экрана это уводит его за пределы видимой области.
+    // На мобильном фиксируем позицию по левому краю щели вместо центра.
+    &__gap-popover {
+      left: 0;
+      transform: none;
+    }
+
+    &__actions {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

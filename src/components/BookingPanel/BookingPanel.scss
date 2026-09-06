@@ -1,0 +1,154 @@
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.booking-panel {
+  position: relative;
+  z-index: 10;
+  margin-top: -60px;
+  padding: 0 fluid(16px, 24px);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: var(--font-family-body);
+
+  // Состояние при прокрутке (можно добавить фон)
+  &--scrolled {
+    // пример: лёгкое затемнение карточки
+    .booking-panel__card {
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  // Состояние ожидания (например, при переходе)
+  &--pending {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  &__card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    padding: fluid(16px, 24px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @include settings-to('tablet') {
+      flex-direction: row;
+      align-items: stretch;
+    }
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+
+    @include settings-to('tablet') {
+      flex-direction: row;
+      align-items: stretch;
+
+      > * {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+  }
+
+  // Стили для гостей (если используются отдельно)
+  &__guests {
+    width: 100%;
+    position: relative;
+  }
+
+  &__guests-btn {
+    display: flex;
+    align-items: center;
+    gap: fluid(4px, 6px);
+    width: 100%;
+    padding: fluid(10px, 12px) fluid(12px, 14px);
+    background-color: var(--color-white);
+    border: 1px solid rgba(23, 63, 53, 0.2);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color 0.2s;
+    font-family: var(--font-family-body);
+    color: var(--color-text-primary);
+    font-size: fluid(14px, 15px);
+
+    &:hover {
+      border-color: var(--color-pr-gold);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-pr-gold);
+      outline-offset: 2px;
+    }
+  }
+
+  &__guests-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  // Панель категорий (sticky)
+  &__categories {
+    position: sticky;
+    top: 72px;
+    z-index: 40;
+    background: rgba(245, 240, 232, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(23, 63, 53, 0.08);
+    padding: fluid(8px, 12px) fluid(12px, 24px);
+    transition: background-color 0.3s ease;
+  }
+
+  &__categories-scroll {
+    display: flex;
+    gap: fluid(6px, 10px);
+    overflow-x: auto;
+    max-width: 1200px;
+    margin-inline: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 4px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @include settings-to('laptop') {
+      flex-wrap: wrap;
+      overflow-x: visible;
+    }
+  }
+
+  &__category-chip {
+    flex-shrink: 0;
+    padding: fluid(8px, 10px) fluid(14px, 16px);
+    background-color: var(--color-white);
+    border: 1px solid rgba(23, 63, 53, 0.15);
+    border-radius: var(--radius-full);
+    font-family: var(--font-family-body);
+    font-size: fluid(13px, 14px);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+    line-height: 1.2;
+
+    &:hover {
+      border-color: var(--color-pr-gold);
+    }
+
+    &--active {
+      background-color: var(--color-pr-brown);
+      border-color: var(--color-pr-brown);
+      color: var(--color-text-inverse);
+    }
+  }
+}

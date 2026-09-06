@@ -1,0 +1,93 @@
+@use '../../../styles/abstracts/functions' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--color-cream);
+  padding: fluid(16px, 24px);
+
+  &__card {
+    background: var(--color-white);
+    padding: fluid(32px, 40px);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    max-width: 400px;
+
+    h1 {
+      margin-bottom: fluid(20px, 24px);
+      text-align: center;
+      color: var(--color-pr-brown);
+      font-family: var(--font-family-heading);
+      font-size: fluid(24px, 28px);
+    }
+
+    input {
+      width: 100%;
+      padding: fluid(10px, 12px);
+      margin-bottom: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: var(--radius-md);
+      font-family: var(--font-family-body);
+      font-size: fluid(14px, 15px);
+      transition: border-color 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: var(--color-pr-gold);
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: fluid(12px, 14px);
+      background: var(--color-pr-brown);
+      color: var(--color-text-inverse);
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: fluid(15px, 16px);
+      transition: filter 0.2s;
+
+      &:hover {
+        filter: brightness(0.85);
+      }
+    }
+
+    &__error {
+      color: #c62828;
+      font-size: fluid(13px, 14px);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    &__success {
+      color: #2e7d32;
+      font-size: fluid(13px, 14px);
+      margin: 0 0 12px;
+      text-align: center;
+    }
+
+    &__link {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--color-text-muted);
+      font-size: fluid(13px, 14px);
+      text-align: center;
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--color-pr-brown);
+      }
+    }
+  }
+}

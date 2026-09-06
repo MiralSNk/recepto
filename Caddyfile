@@ -1,0 +1,6 @@
+# Caddy сам получает и продлевает сертификат Let's Encrypt для домена из
+# переменной DOMAIN (.env.docker) — не нужен отдельный certbot и ручная
+# настройка обновления, как в варианте с nginx (см. DEPLOY.md).
+{$DOMAIN} {
+	reverse_proxy app:3000
+}

@@ -1,0 +1,214 @@
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.date-range-picker {
+  position: relative;
+  width: 100%;
+
+  &__field {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-text-muted);
+    border-radius: var(--radius-md);
+    padding: fluid(8px, 10px) fluid(12px, 14px);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    transition: border-color 0.2s;
+    height: 100%;
+    box-sizing: border-box;
+
+    &:active {
+      border-color: var(--color-pr-gold);
+    }
+
+    @include hover {
+      border-color: var(--color-pr-gold);
+    }
+  }
+
+  &__label {
+    font-family: var(--font-family-body);
+    font-size: fluid(10px, 11px);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  &__value {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-family-heading);
+    font-size: fluid(14px, 15px);
+    color: var(--color-text-primary);
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__icon {
+    width: fluid(16px, 18px);
+    height: auto;
+    flex-shrink: 0;
+    color: var(--color-pr-gold);
+  }
+
+  // Реально рендерится через Portal (см. DateRangePicker.tsx) с классом
+  // &__dropdown--portal — раньше эти оверрайды висели на неиспользуемом
+  // &__dropdown и никогда не применялись к настоящему календарю.
+  &__dropdown--portal {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    padding: fluid(8px, 12px);
+    box-sizing: border-box;
+    min-width: 280px;
+
+    .rdrCalendarWrapper {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: fluid(13px, 14px);
+      color: var(--color-text-primary);
+      background: transparent;
+    }
+
+    .rdrMonth {
+      width: 100%;
+    }
+
+    .rdrDayNumber span {
+      color: var(--color-text-primary);
+    }
+
+    .rdrDayPassive .rdrDayNumber span {
+      color: var(--color-text-muted);
+    }
+
+    .rdrDayToday .rdrDayNumber span:after {
+      background-color: var(--color-pr-gold);
+    }
+
+    .rdrDay:not(.rdrDayPassive) .rdrInRange ~ .rdrDayNumber span,
+    .rdrDay:not(.rdrDayPassive) .rdrStartEdge ~ .rdrDayNumber span,
+    .rdrDay:not(.rdrDayPassive) .rdrEndEdge ~ .rdrDayNumber span {
+      color: var(--color-text-inverse);
+    }
+
+    .rdrDefinedRangesWrapper,
+    .rdrDateDisplayWrapper {
+      display: none;
+    }
+
+    .rdrMonthAndYearWrapper {
+      justify-content: center;
+      padding-top: 0;
+    }
+
+    .rdrMonthPicker select,
+    .rdrYearPicker select {
+      font-family: var(--font-body);
+      color: var(--color-text-primary);
+    }
+
+    .rdrNextPrevButton {
+      background: transparent;
+      border-radius: 50%;
+
+      &:hover {
+        background: var(--color-pr-warm);
+      }
+    }
+  }
+
+  &__dropdown-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding: 0 4px;
+  }
+
+  &__hint {
+    font-size: fluid(12px, 13px);
+    color: var(--color-text-muted);
+  }
+
+  &__close {
+    position: relative;
+    width: auto;
+    min-width: 44px;
+    height: 28px;
+    padding: 0 12px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--color-pr-brown);
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 12px;
+      height: 2px;
+      background: var(--color-text-primary);
+    }
+
+    &::before,
+    &::after {
+      content: none;
+      display: none;
+    }
+
+    &::before {
+      content: 'Ок';
+      display: block;
+      position: static;
+      transform: none;
+      width: auto;
+      height: auto;
+      background: none;
+      color: var(--color-text-inverse);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1;
+      font-family: var(--font-family-body);
+      white-space: nowrap;
+    }
+  }
+
+  .rdrDayDisabled,
+  .rdrDayPassive {
+    opacity: 0.45;
+  }
+}
+
+.date-range-picker__dropdown--portal {
+  position: fixed;
+  z-index: 80;
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  padding: fluid(8px, 12px);
+  box-sizing: border-box;
+  min-width: 280px;
+  max-width: calc(100vw - 32px);
+  max-height: 90vh;
+  overflow-y: auto;
+  pointer-events: auto;
+
+  @include settings-to('tablet') {
+    min-width: 320px;
+    max-width: min(420px, calc(100vw - 32px));
+  }
+}

@@ -1,0 +1,9 @@
+allowBuilds:
+  '@parcel/watcher': true
+  better-sqlite3: false
+  esbuild: true
+  libpq: true
+  oracledb: true
+  protobufjs: true
+  sharp: false
+  unrs-resolver: true

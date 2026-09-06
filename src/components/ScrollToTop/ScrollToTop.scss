@@ -1,0 +1,37 @@
+@use '../../styles/abstracts/functions' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.scroll-to-top {
+  position: fixed;
+  left: fluid(16px, 24px);
+  right: auto;
+  bottom: fluid(16px, 24px);
+  z-index: 500;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-pr-brown);
+  color: var(--color-text-inverse);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+
+  @include settings-to('tablet') {
+    width: 48px;
+    height: 48px;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}

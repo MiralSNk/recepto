@@ -1,0 +1,65 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+# .env.test — без секретов, только конфиг для эфемерной тестовой БД в CI
+!.env.test
+# .env.example — шаблон с плейсхолдерами, без единого реального секрета
+!.env.example
+# .env.docker.example — тот же шаблон, для docker-compose.prod.yml
+!.env.docker.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Local Netlify folder
+.netlify
+
+# Backup files
+/backups/
+
+# Temporary uploads
+/public/rooms/tmp/
+
+# DB dumps (can contain real data/credentials, never commit)
+/recepto_dump.sql
+
+# Рабочие/служебные файлы — не документация проекта
+/AUDIT.md
+# Автогенерируются Next.js (next dev/build) при каждом запуске — не коммитим
+/AGENTS.md
+/CLAUDE.md
