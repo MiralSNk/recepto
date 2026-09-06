@@ -128,8 +128,8 @@ flowchart TB
 
 ## Тесты и качество
 
-- 86 тестовых файлов (Vitest) — unit, component (Testing Library) и интеграционные (реальный MySQL в Docker для CI).
-- GitHub Actions — lint + тесты на каждый push и pull request в `main`.
+- 86 тестовых файлов (Vitest): 85 unit/component (моки, без внешних зависимостей, гоняются на каждый `pnpm test`) + отдельный интеграционный тест против настоящего MySQL.
+- GitHub Actions — два независимых job'а на каждый push и pull request в `main`: lint + unit/component, и отдельно интеграционные тесты с поднятым MySQL-контейнером.
 - TypeScript strict — `tsc --noEmit` без ошибок на протяжении всей разработки.
 
 ## Деплой
@@ -202,6 +202,8 @@ pnpm admin:bootstrap # создаёт первого администратор�
 | YandexGPT | `YANDEX_FOLDER_ID`, `YANDEX_API_KEY` |
 | SmartCaptcha | `YANDEX_CAPTCHA_SERVERKEY`, `NEXT_PUBLIC_YANDEX_CAPTCHA_SITEKEY` |
 
+Как получить значения для YandexGPT и SmartCaptcha в консоли Yandex Cloud (с нюансами вроде обязательного списка доменов для капчи) — в [`YANDEX_SETUP.md`](./YANDEX_SETUP.md).
+
 ---
 
-<sub>Портфолио-версия: сгенерирована из боевого репозитория, вся идентифицирующая заказчика информация (фотографии, координаты, контакты, брендинг) заменена на демо-данные. Функциональность и структура кода полностью соответствуют развёрнутому проекту.</sub>
+<sub>Портфолио-версия реального проекта — фото, контакты и брендинг заменены на демо-данные, код и функциональность не сокращены.</sub>

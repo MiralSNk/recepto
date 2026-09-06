@@ -17,6 +17,8 @@ git clone <url-репозитория> /var/www/app
 cd /var/www/app
 cp .env.docker.example .env.docker
 nano .env.docker   # заполнить реальными значениями — см. комментарии в файле
+# YANDEX_* / NEXT_PUBLIC_YANDEX_CAPTCHA_SITEKEY — см. YANDEX_SETUP.md, там же
+# про обязательный список доменов для капчи
 
 docker compose -f docker-compose.prod.yml --env-file .env.docker up -d --build
 ```

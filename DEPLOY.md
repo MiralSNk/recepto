@@ -94,7 +94,7 @@ MAIL_TO=<куда слать заявки с сайта>
 NEXT_PUBLIC_SITE_URL=http://<ваш-домен>  # временно http — поправим на шаге 10
 ```
 
-Полный список переменных с описанием каждой — в [`.env.example`](./.env.example).
+Полный список переменных с описанием каждой — в [`.env.example`](./.env.example). Где взять `YANDEX_FOLDER_ID`/`YANDEX_API_KEY`/`YANDEX_CAPTCHA_SERVERKEY`/`NEXT_PUBLIC_YANDEX_CAPTCHA_SITEKEY` в консоли Yandex Cloud — пошагово в [`YANDEX_SETUP.md`](./YANDEX_SETUP.md), включая нюанс про обязательный список доменов для капчи.
 
 ## 5. Миграции БД
 
