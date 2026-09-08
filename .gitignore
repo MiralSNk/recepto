@@ -39,6 +39,10 @@ yarn-error.log*
 # .env.docker.example — тот же шаблон, для docker-compose.prod.yml
 !.env.docker.example
 
+# .deploy-mode — характеристика конкретного сервера (pm2 или docker),
+# заводится вручную один раз, см. CI_CD.md
+.deploy-mode
+
 # vercel
 .vercel
 
