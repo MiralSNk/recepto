@@ -1,0 +1,80 @@
+name: Provision new server
+
+# Только вручную (workflow_dispatch) — этот workflow ставит системные пакеты,
+# создаёт БД и открывает порты через nginx/certbot на ЦЕЛЕВОМ сервере,
+# запускать его на каждый пуш было бы и бессмысленно, и опасно. Рассчитан на
+# первый запуск на пустом Ubuntu-сервере — см. PROVISION.md.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Способ деплоя'
+        required: true
+        type: choice
+        options: [pm2, docker]
+        default: pm2
+
+jobs:
+  provision:
+    name: Provision fresh VPS
+    runs-on: ubuntu-latest
+    steps:
+      # Этот репозиторий публичный — git clone по HTTPS работает анонимно,
+      # без ключа. Приватному форку/копии нужен свой Deploy Key — см.
+      # PROVISION.md и версию этого workflow в приватном репозитории.
+      - name: Bootstrap server and clone/update repo
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT || '22' }}
+          script: |
+            set -e
+            sudo apt-get update -y
+            sudo apt-get install -y git curl
+
+            sudo mkdir -p "${{ secrets.DEPLOY_PATH }}"
+            sudo chown "$USER":"$USER" "${{ secrets.DEPLOY_PATH }}"
+            if [ -d "${{ secrets.DEPLOY_PATH }}/.git" ]; then
+              cd "${{ secrets.DEPLOY_PATH }}"
+              git pull origin main
+            else
+              git clone "https://github.com/${{ github.repository }}.git" "${{ secrets.DEPLOY_PATH }}"
+            fi
+
+      - name: Write config and provision (pm2)
+        if: github.event.inputs.mode == 'pm2'
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT || '22' }}
+          script: |
+            set -e
+            cd "${{ secrets.DEPLOY_PATH }}"
+            cat > .env.production <<'ENVEOF'
+            ${{ secrets.ENV_PRODUCTION }}
+            ENVEOF
+            echo pm2 > .deploy-mode
+            export DOMAIN="${{ secrets.DOMAIN }}"
+            export CERTBOT_EMAIL="${{ secrets.CERTBOT_EMAIL }}"
+            bash scripts/provision-server.sh
+
+      - name: Write config and provision (docker)
+        if: github.event.inputs.mode == 'docker'
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT || '22' }}
+          script: |
+            set -e
+            cd "${{ secrets.DEPLOY_PATH }}"
+            cat > .env.docker <<'ENVEOF'
+            ${{ secrets.ENV_DOCKER }}
+            ENVEOF
+            echo docker > .deploy-mode
+            bash scripts/provision-server-docker.sh
