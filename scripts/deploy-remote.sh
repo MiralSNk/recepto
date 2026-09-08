@@ -19,7 +19,9 @@ if [ "$DEPLOY_MODE" = "docker" ]; then
 else
   echo "[deploy] Режим: pm2"
   pnpm install --frozen-lockfile
-  pnpm build
+  # Явный heap-лимит — на маленьком сервере без него следующий OOM может
+  # выбрать не процесс сборки, а MySQL рядом (см. CI_CD.md про своп).
+  NODE_OPTIONS="--max-old-space-size=2048" pnpm build
   pnpm db:migrate
   pm2 restart ecosystem.config.js
 fi
